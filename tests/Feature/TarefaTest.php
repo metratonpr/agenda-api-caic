@@ -125,4 +125,35 @@ class TarefaTest extends TestCase
                 'message' => "Tarefa não encontrado!"
             ]);
     }
+
+
+    /**
+     * Teste de atualizacao com sucesso
+     * @return void
+     */
+
+    public function test_atualizar_tarefa_com_sucesso()
+    {
+        //Criar dados     
+        $tarefa = Tarefa::factory()->create();
+        $new = [
+            'data' => $this->faker->date(),
+            'assunto' => $this->faker->word(),
+            'descricao' => $this->faker->sentence(),
+            'contato' => $this->faker->name(),
+            'tipo_id' => Tipo::factory()->create()->id
+        ];
+        //Processar
+        $response = $this->putJson('/api/tarefas/' . $tarefa->id, $new);
+        //Analisar
+        $response->assertStatus(200)
+            ->assertJson([
+                'id' => $tarefa->id,
+                'data' => $new['data'],
+                'assunto' => $new['assunto'],
+                'descricao' => $new['descricao'],
+                'contato' => $new['contato'],
+                'tipo_id' => $new['tipo_id'],
+            ]);
+    }
 }
