@@ -68,7 +68,7 @@ class TarefaController extends Controller
         $tarefa = Tarefa::find($id);
          
         if (!$tarefa) {
-            return response()->json(['message' => 'Tarefa não encontrado!'], 404);
+            return response()->json(['message' => 'Tarefa não encontrada!'], 404);
         }
 
         // Faça o update do tipo

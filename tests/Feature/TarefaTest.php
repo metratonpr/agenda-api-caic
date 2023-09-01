@@ -156,4 +156,54 @@ class TarefaTest extends TestCase
                 'tipo_id' => $new['tipo_id'],
             ]);
     }
+
+    /**
+     * Teste de atualizacao com falha no id
+     * @return void
+     */
+
+     public function test_atualizar_tarefa_com_falha_no_id()
+     {
+         //Criar dados     
+             $new = [
+             'data' => $this->faker->date(),
+             'assunto' => $this->faker->word(),
+             'descricao' => $this->faker->sentence(),
+             'contato' => $this->faker->name(),
+             'tipo_id' => Tipo::factory()->create()->id
+         ];
+         //Processar
+         $response = $this->putJson('/api/tarefas/999999999', $new);
+         //Analisar
+         $response->assertStatus(404)
+             ->assertJson([
+                 'message' => "Tarefa não encontrada!",
+             ]);
+     }
+
+     /**
+     * Teste de atualizacao com falha nos dados
+     * @return void
+     */
+
+     public function test_atualizar_tarefa_com_falha_nos_dados()
+     {
+        $tarefa = Tarefa::factory()->create();
+         //Criar dados     
+             $new = [
+             'data' => "",
+             'assunto' => "",
+             'descricao' => "",
+             'contato' => "",
+             'tipo_id' => ""
+         ];
+         //Processar
+         $response = $this->putJson('/api/tarefas/'.$tarefa->id, $new);
+         //Analisar
+         $response->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'data', 'assunto', 'descricao',
+                'contato', 'tipo_id'
+            ]);
+     }
 }
