@@ -90,13 +90,13 @@ class TarefaController extends Controller
         $tarefa = Tarefa::find($id);
          
         if (!$tarefa) {
-            return response()->json(['message' => 'Tipo não encontrado!'], 404);
+            return response()->json(['message' => 'Tarefa não encontrada!'], 404);
         }
 
         // Faça o update do tipo
         $tarefa->delete();
 
         // Retorne o tipo
-        return response()->json(['message' => 'Tipo deletado com sucesso!'], 200);
+        return response()->json(['message' => 'Tarefa deletada com sucesso!'], 200);
     }
 }

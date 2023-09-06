@@ -206,4 +206,39 @@ class TarefaTest extends TestCase
                 'contato', 'tipo_id'
             ]);
      }
+
+     /**
+     * Deletar com Sucesso
+     * @return void
+     */
+
+     public function test_deletar_com_sucesso()
+     {
+         //Criar dados     
+         $tarefa = Tarefa::factory()->create();
+         //Processar
+         $response = $this->deleteJson('/api/tarefas/'.$tarefa->id);
+         //Analisar
+         $response->assertStatus(200)
+             ->assertJson([
+                 'message' => "Tarefa deletada com sucesso!",
+             ]);
+     }
+
+     /**
+     * Teste de remover com falha no id
+     * @return void
+     */
+
+     public function test_remover_tarefa_com_falha_no_id()
+     {
+         //Criar dados
+         //Processar
+         $response = $this->deleteJson('/api/tarefas/999999999');
+         //Analisar
+         $response->assertStatus(404)
+             ->assertJson([
+                 'message' => "Tarefa não encontrada!",
+             ]);
+     }
 }
